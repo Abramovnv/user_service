@@ -4,10 +4,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import school.faang.user_service.dto.SkillDto;
+import school.faang.user_service.entity.Skill;
+import school.faang.user_service.exception.DataValidationException;
+import school.faang.user_service.mapper.SkillMapper;
+import school.faang.user_service.repository.SkillRepository;
 
 @Service
 @Data
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class SkillService {
+    private final SkillRepository skillRepository;
+    private final SkillMapper skillMapper;
+
+    public Skill create(SkillDto skillDto) {
+        if (skillRepository.existsByTitle(skillDto.getTitle())) {
+            throw new DataValidationException("Skill with title: " + skillDto.getTitle() + " already exist");
+        }
+        return skillRepository.save(skillMapper.toEntity(skillDto));
+    }
+
 }
