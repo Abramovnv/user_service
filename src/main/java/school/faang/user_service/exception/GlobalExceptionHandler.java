@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
                 .error(dataValidationException.getClass().getName())
                 .message(dataValidationException.getMessage())
                 .build();
-        log.error(errorResponse.toString());
+        log.warn(errorResponse.toString());
         return errorResponse;
     }
 }
