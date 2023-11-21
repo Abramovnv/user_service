@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import school.faang.user_service.dto.UserDto;
 import school.faang.user_service.dto.SubscriptionFilterDto;
+import school.faang.user_service.entity.User;
 import school.faang.user_service.service.SubscriptionService;
 import school.faang.user_service.validator.UserValidator;
 
@@ -33,24 +34,24 @@ public class SubscriptionController {
     @ResponseStatus(HttpStatus.OK)
     public void followUser(@RequestParam @Min(0) @NotBlank long followerId,
                            @RequestParam @Min(0) @NotBlank long followeeId) {
-        userValidator.validateFollowerIdAndFolloweeId(followerId,followeeId);
+        userValidator.validateFollowerIdAndFolloweeId(followerId, followeeId);
         subscriptionService.followUser(followerId, followeeId);
     }
 
     @PostMapping("/unfollowUser")
     @ResponseStatus(HttpStatus.OK)
     public void unfollowUser(@RequestParam @Min(0) @NotBlank long followerId,
-                             @RequestParam @Min(0) @NotBlank long followeeId){
-        userValidator.validateFollowerIdAndFolloweeId(followerId,followeeId);
+                             @RequestParam @Min(0) @NotBlank long followeeId) {
+        userValidator.validateFollowerIdAndFolloweeId(followerId, followeeId);
         subscriptionService.unfollowUser(followerId, followeeId);
     }
 
     @GetMapping("/getFollowers/{followee}")
     //name - это то, как мы назвали в url, обязательный параметр стоит по дефолту.
     public List<UserDto> getFollowers(@PathVariable(name = "followee", required = true) long followeeId,
-                                      @RequestBody SubscriptionFilterDto userFilterDto){
-
-        return new ArrayList<>();
+                                      @RequestBody SubscriptionFilterDto userFilterDto) {
+        List<User> users = subscriptionService.getFollowers(followeeId, userFilterDto);
+        return
     }
 
 
