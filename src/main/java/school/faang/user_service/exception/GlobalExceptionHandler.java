@@ -19,10 +19,10 @@ public class GlobalExceptionHandler {
                 .localDateTime(LocalDateTime.now())
                 .url(httpServletRequest.getRequestURI())
                 .status(HttpStatus.BAD_REQUEST.value())
-                .error(dataValidationException.getClass().getName())
+                .error(dataValidationException.getClass().getSimpleName())
                 .message(dataValidationException.getMessage())
                 .build();
-        log.error(errorResponse.toString());
+        log.warn(errorResponse.toString());
         return errorResponse;
     }
 }
