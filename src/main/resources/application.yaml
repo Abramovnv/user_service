@@ -26,6 +26,7 @@ spring:
           name: follower_channel
         profile_view_channel:
             name: profile_view_channel
+    min_skill_offers: 3
 
 server:
   port: 8080

@@ -14,6 +14,8 @@ public interface SkillRepository extends CrudRepository<Skill, Long> {
 
     boolean existsByTitle(String title);
 
+    Skill findSkillById(long skillId);
+
     @Query(nativeQuery = true, value = "SELECT COUNT(id) FROM skill WHERE id IN (?1)")
     int countExisting(List<Long> ids);
 

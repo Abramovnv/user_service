@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import school.faang.user_service.dto.UserDto;
 import school.faang.user_service.dto.UserFilterDto;
 import school.faang.user_service.entity.User;
 import school.faang.user_service.filter.userFilter.UserFilter;
+import school.faang.user_service.mapper.UserMapper;
 import school.faang.user_service.repository.SubscriptionRepository;
 
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.stream.Stream;
 public class SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
     private final List<UserFilter> userFilters;
+    private final UserMapper userMapper;
 
     @Transactional
     public void followUser(long followerId, long followeeId) {
@@ -38,12 +41,12 @@ public class SubscriptionService {
 
     //Такие фильтрации лучше делать на стороне базы, в учебных целях реализовал на стороне джавы
     @Transactional(readOnly = true)
-    public List<User> getFollowers(long followeeId, UserFilterDto userFilterDto) {
+    public List<UserDto> getFollowers(long followeeId, UserFilterDto userFilterDto) {
         if (userFilterDto != null) {
             Stream<User> users = subscriptionRepository.findByFolloweeId(followeeId);
-            return usersAfterFilter(users, userFilterDto);
+            return userMapper.toDto(usersAfterFilter(users, userFilterDto));
         }
-        return subscriptionRepository.findByFolloweeId(followeeId).toList();
+        return userMapper.toDto(subscriptionRepository.findByFolloweeId(followeeId).toList());
     }
 
     @Transactional(readOnly = true)
@@ -52,12 +55,12 @@ public class SubscriptionService {
     }
 
     @Transactional(readOnly = true)
-    public List<User> getFollowing(long followerId, UserFilterDto userFilterDto) {
+    public List<UserDto> getFollowing(long followerId, UserFilterDto userFilterDto) {
         if (userFilterDto != null) {
             Stream<User> users = subscriptionRepository.findByFollowerId(followerId);
-            return usersAfterFilter(users, userFilterDto);
+            return userMapper.toDto(usersAfterFilter(users, userFilterDto));
         }
-        return subscriptionRepository.findByFolloweeId(followerId).toList();
+        return userMapper.toDto(subscriptionRepository.findByFolloweeId(followerId).toList());
     }
 
     private List<User> usersAfterFilter(Stream<User> users, UserFilterDto userFilterDto) {
