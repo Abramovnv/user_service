@@ -13,11 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import school.faang.user_service.config.context.UserContext;
 import school.faang.user_service.dto.UserDto;
 import school.faang.user_service.dto.UserFilterDto;
-import school.faang.user_service.entity.User;
-import school.faang.user_service.mapper.UserMapper;
 import school.faang.user_service.service.SubscriptionService;
 import school.faang.user_service.validator.UserValidator;
 
@@ -30,7 +27,6 @@ import java.util.List;
 public class SubscriptionController {
     private final SubscriptionService subscriptionService;
     private final UserValidator userValidator;
-    private final UserMapper userMapper;
 
     @PostMapping("/followUser")
     @ResponseStatus(HttpStatus.OK)
@@ -52,8 +48,7 @@ public class SubscriptionController {
     //name - это то, как мы назвали в url, обязательный параметр стоит по дефолту.
     public List<UserDto> getFollowers(@PathVariable(name = "followee", required = true) long followeeId,
                                       @RequestBody(required = false) UserFilterDto userFilterDto) {
-        List<User> users = subscriptionService.getFollowers(followeeId, userFilterDto);
-        return userMapper.toDto(users);
+        return subscriptionService.getFollowers(followeeId, userFilterDto);
     }
 
     @GetMapping("/getFolloweeCount")
@@ -63,12 +58,11 @@ public class SubscriptionController {
 
     @GetMapping("/getFollowing/{followerId}")
     public List<UserDto> getFollowing(@PathVariable long followerId, @RequestBody(required = false) UserFilterDto userFilterDto) {
-        List<User> users = subscriptionService.getFollowing(followerId, userFilterDto);
-        return userMapper.toDto(users);
+        return subscriptionService.getFollowing(followerId, userFilterDto);
     }
 
     @GetMapping("/getFollowingCount")
-    public int getFollowingCount(@RequestParam @Min(0) long followerId){
+    public int getFollowingCount(@RequestParam @Min(0) long followerId) {
         return subscriptionService.getFollowerCount(followerId);
     }
 }
