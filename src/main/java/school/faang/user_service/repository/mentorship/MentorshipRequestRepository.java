@@ -4,7 +4,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import school.faang.user_service.entity.MentorshipRequest;
+import school.faang.user_service.entity.User;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -23,4 +25,10 @@ public interface MentorshipRequestRepository extends CrudRepository<MentorshipRe
             LIMIT 1
             """)
     Optional<MentorshipRequest> findLatestRequest(long requesterId, long receiverId);
+
+
+    List<MentorshipRequest> findMentorshipRequestByReceiver(User receiver);
+
+    Boolean existsMentorshipRequestById(long requestId);
+
 }

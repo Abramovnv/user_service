@@ -1,4 +1,4 @@
-package school.faang.user_service.dto;
+package school.faang.user_service.dto.skill;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

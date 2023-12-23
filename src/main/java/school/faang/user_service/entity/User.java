@@ -1,5 +1,6 @@
 package school.faang.user_service.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -90,9 +91,11 @@ public class User {
     private List<User> mentors;
 
     @OneToMany(mappedBy = "receiver")
+    @JsonManagedReference
     private List<MentorshipRequest> receivedMentorshipRequests;
 
     @OneToMany(mappedBy = "requester")
+    @JsonManagedReference
     private List<MentorshipRequest> sentMentorshipRequests;
 
     @OneToMany(mappedBy = "inviter")
