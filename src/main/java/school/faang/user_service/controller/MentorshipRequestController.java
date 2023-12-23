@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import school.faang.user_service.config.context.UserContext;
 import school.faang.user_service.dto.mentorship.MentorshipRequestDto;
+import school.faang.user_service.dto.mentorship.RejectionReasonDto;
 import school.faang.user_service.service.MentorshipRequestService;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class MentorshipRequestController {
     }
 
     @PostMapping("/rejectRequest/{requestId}")
-    public MentorshipRequestDto rejectRequest(@PathVariable long requestId, @RequestParam @Valid String message){
-        return mentorshipRequestService.rejectRequest(requestId,message);
+    public MentorshipRequestDto rejectRequest(@PathVariable long requestId, @RequestParam @Valid RejectionReasonDto rejectionReasonDto){
+        return mentorshipRequestService.rejectRequest(requestId,rejectionReasonDto);
     }
 }
